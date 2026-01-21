@@ -30,7 +30,7 @@ AlxFont TitleAlxFont;
 AlxFont Icons;
 AlxFont BigIcons;
 
-void* GameTest(void* lpParam) {
+void* VB_GameTest(void* lpParam) {
     VWindow* w = (VWindow*)lpParam;
     
     Vec2 p1 = {   0.0f,  0.0f };
@@ -137,7 +137,7 @@ void* GameTest(void* lpParam) {
     }
     return NULL;
 }
-void* Commander(void* lpParam) {
+void* VB_Commander(void* lpParam) {
     VWindow* w = (VWindow*)lpParam;
     Cmd cmd = Cmd_Make(&VSession);
     
@@ -193,7 +193,7 @@ void* Commander(void* lpParam) {
 
     return NULL;
 }
-void* Explorer(void* lpParam) {
+void* VB_Explorer(void* lpParam) {
     VWindow* w = (VWindow*)lpParam;
     
     TextBox tb = TextBox_New(Input_New(100,1),(Rect){0.0f,0.0f,w->Context.w,30.0f},ALXFONT_PATHS_BLOCKY,w->Context.h / 15,w->Context.h / 15,GRAY);
@@ -328,7 +328,7 @@ void ChooseFileHigh(String* HighLighter){
     CStr_Free(&fc);
 }
 
-void Button_Save(Button* b,ButtonEvent* be){
+void Button_Save(void* parent,Button* b,ButtonEvent* be){
     /*if(be->e.EventType==EVENT_PRESSED){
         char* Path = String_CStr(&SavingPath.In.Buffer);
         char* Data = String_CStr(&Field.In.Buffer);
@@ -343,7 +343,7 @@ void Button_Save(Button* b,ButtonEvent* be){
         free(Data);
     }*/
 }
-void Button_Load(Button* b,ButtonEvent* be){
+void Button_Load(void* parent,Button* b,ButtonEvent* be){
     /*if(be->e.EventType==EVENT_PRESSED){
         char* Path = String_CStr(&SavingPath.In.Buffer);
         
@@ -380,12 +380,12 @@ void Button_Load(Button* b,ButtonEvent* be){
         free(Path);
     }*/
 }
-void Button_Search(Button* b,ButtonEvent* be){
+void Button_Search(void* parent,Button* b,ButtonEvent* be){
     /*if(be->e.EventType==EVENT_PRESSED){
         ChooseFile();
     }*/
 }
-void Button_SearchHigh(Button* b,ButtonEvent* be){
+void Button_SearchHigh(void* parent,Button* b,ButtonEvent* be){
     /*if(be->e.EventType==EVENT_PRESSED){
         ChooseFileHigh();
 
@@ -395,7 +395,7 @@ void Button_SearchHigh(Button* b,ButtonEvent* be){
     }*/
 }
 
-void* Editor(void* lpParam) {
+void* VB_Editor(void* lpParam) {
     VWindow* w = (VWindow*)lpParam;
     
     int OffsetX = 100;
@@ -558,22 +558,22 @@ void Update(AlxWindow* w){
             char* Title = str;
             PVector_Push(&VWindows,(VWindow[]){ VWindow_New(Title,(Vec2){GetHeight() / 10,GetHeight() / 10},(Vec2){(float)GetWidth() * 0.7,(float)GetHeight() * 0.5}) },sizeof(VWindow));
             VWindow* VWindowFirst = (VWindow*)PVector_Get(&VWindows,VWindows.size-1);
-            VProcess_Make(VWindowFirst,&VProcesses,Title,Commander);
+            VProcess_Make(VWindowFirst,&VProcesses,Title,VB_Commander);
         }else if(CStr_Cmp(str,"Explorer")){
             char* Title = str;
             PVector_Push(&VWindows,(VWindow[]){ VWindow_New(Title,(Vec2){GetHeight() / 10,GetHeight() / 10},(Vec2){(float)GetWidth() * 0.7,(float)GetHeight() * 0.5}) },sizeof(VWindow));
             VWindow* VWindowFirst = (VWindow*)PVector_Get(&VWindows,VWindows.size-1);
-            VProcess_Make(VWindowFirst,&VProcesses,Title,Explorer);
+            VProcess_Make(VWindowFirst,&VProcesses,Title,VB_Explorer);
         }else if(CStr_Cmp(str,"Pong")){
             char* Title = str;
             PVector_Push(&VWindows,(VWindow[]){ VWindow_New(Title,(Vec2){GetHeight() / 10,GetHeight() / 10},(Vec2){(float)GetWidth() * 0.7,(float)GetHeight() * 0.5}) },sizeof(VWindow));
             VWindow* VWindowFirst = (VWindow*)PVector_Get(&VWindows,VWindows.size-1);
-            VProcess_Make(VWindowFirst,&VProcesses,Title,GameTest);
+            VProcess_Make(VWindowFirst,&VProcesses,Title,VB_GameTest);
         }else if(CStr_Cmp(str,"Editor")){
             char* Title = str;
             PVector_Push(&VWindows,(VWindow[]){ VWindow_New(Title,(Vec2){GetHeight() / 10,GetHeight() / 10},(Vec2){(float)GetWidth() * 0.7,(float)GetHeight() * 0.5}) },sizeof(VWindow));
             VWindow* VWindowFirst = (VWindow*)PVector_Get(&VWindows,VWindows.size-1);
-            VProcess_Make(VWindowFirst,&VProcesses,Title,Editor);
+            VProcess_Make(VWindowFirst,&VProcesses,Title,VB_Editor);
         }
         String_Clear(&SearchBar.In.Buffer);
     }
