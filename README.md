@@ -1,193 +1,124 @@
-# Gui_VirtualBox
+## Overview
 
+This project is a simple C application designed to run on various platforms including Linux, Windows, and through WebAssembly. The primary file of interest is `src/Main.c`, which serves as the entry point for the program.
 
-## Project Overview
+## Features
 
-This project implements specialized functionality related to virtualbox.
+- The program is built using Makefiles tailored for different environments: Linux (`Makefile.linux`), Windows (`Makefile.windows`), Wine (`Makefile.wine`), and WebAssembly (`Makefile.web`).
+- The source code includes `Main.c` and associated header files (`*.h`) located in the `src/` directory.
+- Different build configurations are provided to facilitate development on various platforms.
 
-## Core Components
-
-### Main Functionality
-- Implements core algorithms for virtualbox
-- Efficient data structures
-- Optimized performance
-- Clean code organization
-
-### Technical Features
-- C/C++ implementation
-- Dynamic memory management
-- Platform-independent design
-- Real-time capable
-
-### Architecture
-- Module separation
-- Clear interface design
-- Proper abstraction layers
-- Extensible design
-
-## Use Cases
-- Production systems
-- Educational purposes
-- Research applications
-- Performance-critical operations
-
-## Performance Characteristics
-- Optimized algorithms
-- Efficient memory usage
-- Scalable architecture
-- Minimal overhead
-
-## Implementation Quality
-- Well-organized code
-- Meaningful naming
-- Proper error handling
-- Memory management
-
-## Build and Deployment
-- Standard C/C++ compilation
-- Makefile-based building
-- Cross-platform support
-- Easy integration
-
-
-## Building the Project
-
-### Prerequisites
-- C/C++ Compiler (GCC, Clang, or MSVC)
-- Make utility
-- Standard development tools
-
-### Build Steps
-
-1. Navigate to project directory:
-```bash
-cd Gui_VirtualBox
-```
-
-2. Build the project:
-```bash
-make -f Makefile.(os) all
-```
-
-3. For clean rebuild:
-```bash
-make -f Makefile.(os) clean
-make -f Makefile.(os) all
-```
-
-4. If there are ./bin and ./libs directories, build libs with:
-```bash
-make -f Makefile.(os) cleanlib
-make -f Makefile.(os) lib
-```
-
-### Build Options
-```bash
-make -f Makefile.(os) all         # build output
-make -f Makefile.(os) do        # build + exe output
-make -f Makefile.(os) clean   # Remove build artifacts
-```
-
-## Running the Project
-
-Execute the compiled binary:
-
-```bash
-./build/Main(.exe)
-```
-
-Or using make:
-```bash
-make -f Makefile.(os) exe
-```
-
-## Project Organization
+## Project Structure
 
 ```
 Gui_VirtualBox/
-├── src/
-│   ├── Main.c          # Entry point
-│   └── *.c             # Implementation files
-├── Makefile            # Build configuration
-└── README.md           # This file
+├── Makefile.linux
+├── Makefile.windows
+├── Makefile.wine
+├── Makefile.web
+├── README.md
+└── src/
+    ├── Main.c
+    └── *.h
 ```
 
-## Technical Details
+### Prerequisites
 
-### Language: C/C++
-- Performance-oriented
-- Direct hardware access where needed
-- Memory efficient
-- Widely portable
+- **C/C++ Compiler and Debugger**: GCC or Clang for Linux, MSVC for Windows.
+- **Make utility**: Required to run the build scripts.
+- **Standard development tools**: Commonly installed on most Linux distributions; MSYS2/MinGW for Windows.
+- **Libraries**:
+  - For Linux: X11 (`libX11-dev`), PNG and JPEG libraries (`libpng-dev`, `libjpeg-dev`).
+  - For Windows: User32, GDI32, Winmm libraries (part of the Windows SDK).
+  - For Wine: Wine development tools.
+  - For WebAssembly: Emscripten (`emcc`).
 
-### Key Technologies
-- Standard C library
-- System-specific libraries as needed
-- Algorithm optimization
-- Efficient data structures
+## Build & Run
 
-### Code Quality
-- Clean, readable implementation
-- Proper error handling
-- Resource management
-- Well-documented algorithms
+### Building on Linux
 
-## Development Notes
+To build and run the project on a Linux system:
 
-### Architecture Decisions
-- Modular design for reusability
-- Efficient algorithms for performance
-- Clear separation of concerns
-- Extensible structure
+1. Navigate to the project directory:
+   ```bash
+   cd Gui_VirtualBox/
+   ```
 
-### Performance Optimizations
-- Algorithm efficiency
-- Memory layout optimization
-- Cache-conscious programming
-- Minimal overhead
+2. Build the project using the provided Makefile for Linux:
+   ```bash
+   make -f Makefile.linux all
+   ```
 
-### Portability
-- Cross-platform compatible
-- Platform-specific optimizations where possible
-- Standard library usage
-- No external dependencies (where feasible)
+3. To run the executable, use:
+   ```bash
+   make -f Makefile.linux exe
+   ```
 
-## Troubleshooting
+### Building on Windows
 
-### Build Issues
-- Ensure compiler is installed
-- Check file paths and permissions
-- Verify Make installation
-- Review compiler error messages
+To build and run the project on a Windows system:
 
-### Runtime Issues
-- Check input data validity
-- Verify file accessibility
-- Ensure sufficient memory
-- Review output format
+1. Navigate to the project directory:
+   ```bash
+   cd Gui_VirtualBox/
+   ```
 
-### Performance Issues
-- Check compiler optimization flags
-- Profile hot code paths
-- Review algorithm complexity
-- Consider input size
+2. Build the project using the provided Makefile for Windows:
+   ```bash
+   make -f Makefile.windows all
+   ```
 
-## Future Improvements
+3. To run the executable, use:
+   ```bash
+   make -f Makefile.windows exe
+   ```
 
-Potential enhancements:
-- Additional optimization opportunities
-- Extended functionality
-- Platform-specific optimizations
-- Performance profiling
+### Building on Wine
 
-## References
+To build and run the project cross-compiling to Windows using Wine:
 
-For technical background:
-- Algorithm textbooks
-- Computer science references
-- Language documentation
-- Online educational resources
+1. Navigate to the project directory:
+   ```bash
+   cd Gui_VirtualBox/
+   ```
 
----
+2. Build the project using the provided Makefile for Wine:
+   ```bash
+   make -f Makefile.wine all
+   ```
 
-*Project implementing practical algorithms and data structures in C/C++*
+3. To run the executable in a Wine environment, use:
+   ```bash
+   make -f Makefile.wine exe
+   ```
+
+### Building WebAssembly
+
+To build and run the project as WebAssembly:
+
+1. Navigate to the project directory:
+   ```bash
+   cd Gui_VirtualBox/
+   ```
+
+2. Build the project using the provided Makefile for WebAssembly:
+   ```bash
+   make -f Makefile.web all
+   ```
+
+3. To serve the generated HTML file and run it in a browser, use:
+   ```bash
+   make -f Makefile.web exe
+   ```
+
+4. Open your web browser and navigate to `http://localhost:8080` to view the application.
+
+### Cleaning
+
+To clean up build artifacts:
+
+```bash
+make -f Makefile.(os) clean
+```
+
+Replace `(os)` with `linux`, `windows`, `wine`, or `web` depending on the target platform.
