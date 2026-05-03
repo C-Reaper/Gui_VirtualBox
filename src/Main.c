@@ -149,7 +149,7 @@ void* VB_Commander(void* lpParam) {
     
     while(cmd.Running){
         cmd.Stdin.Enabled = w->Focus;
-        hThread = Session_Update(&VSession,&cmd,hThread);
+        Session_Update(&VSession,&cmd,&hThread);
 
         Mutex_Lock(&w->hMutex);
         
@@ -435,7 +435,7 @@ void* VB_Editor(void* lpParam) {
         }else if(Field.In.Again && VWindow_Stroke(w,ALX_KEY_DOWN).DOWN && VWindow_Stroke(w,ALX_KEY_CTRL).DOWN){
             Field.ScrollY -= 1;
             char* cstr = String_CStr(&Field.In.Buffer);
-            int Max = (CStr_CountOf(cstr,'\n')+4) - ((w->Context.h-OffsetY) / (Field.AlxFont.CharSizeY * INPUT_GAP_FAKTOR));
+            int Max = (CStr_CountOf(cstr,'\n')+4) - ((w->Context.h-OffsetY) / (Field.font.CharSizeY * INPUT_GAP_FAKTOR));
             free(cstr);
             if(Field.ScrollY<-Max)  Field.ScrollY = -Max;
             if(Field.ScrollY>0)     Field.ScrollY = 0;
@@ -486,7 +486,7 @@ void* VB_Editor(void* lpParam) {
             if(c=='\n' || i==Field.In.Buffer.size-1){
                 char Buff[20];
                 sprintf(Buff,"%d",Lines);
-                CStr_RenderAlxFont(WINDOW_STD_ARGS,&Field.AlxFont,Buff,0,OffsetY + (Field.ScrollY + Lines) * (Field.AlxFont.CharSizeY * INPUT_GAP_FAKTOR),BLACK);
+                CStr_RenderAlxFont(WINDOW_STD_ARGS,&Field.font,Buff,0,OffsetY + (Field.ScrollY + Lines) * (Field.font.CharSizeY * INPUT_GAP_FAKTOR),BLACK);
 
                 Chars = i - Chop;
                 if(Field.In.Curser>=Chop && Field.In.Curser<=i+1){
