@@ -416,7 +416,11 @@ void* VB_Editor(void* lpParam) {
     TextBox Field = TextBox_New(Input_New(INPUT_MAXLENGTH,INPUT_MAXLENGTH),(Rect){ { OffsetX,OffsetY },{ w->Context.w-OffsetX,w->Context.h-OffsetY } },ALXFONT_PATHS_YANIS,Size,Size,WHITE);
     TextBox_SetSyntax(&Field,SYSTEM_PATH "SyntaxFiles/C_Syntax.alxon");
 
-    Scene scene = Scene_New();
+    Scene scene = Scene_New(
+        NULL,
+        (Rect){ 0.0f,0.0f,(float)w->Context.w,(float)w->Context.h },
+        BLACK
+    );
     Scene_Add(&scene,(Button[]){ Button_NewStd(NULL,"Save",Button_Save,(Vec2){19.0f,19.0f},(Rect){ {0.0f,0.0f},{OffsetX,OffsetY} },RED,BLACK) },sizeof(Button));
     Scene_Add(&scene,(Button[]){ Button_NewStd(NULL,"Load",Button_Load,(Vec2){19.0f,19.0f},(Rect){ {OffsetX,0.0f},{OffsetX,OffsetY} },GREEN,BLACK) },sizeof(Button));
     Scene_Add(&scene,(Button[]){ Button_NewStd(NULL,"Find",Button_Search,(Vec2){19.0f,19.0f},(Rect){ {OffsetX*2,0.0f},{OffsetX,OffsetY} },BLUE,BLACK) },sizeof(Button));
@@ -443,7 +447,9 @@ void* VB_Editor(void* lpParam) {
             Input_DefaultReact(&Field.In,NULL);
         }
 
-        Scene_Update(&scene,window.Strokes,VWindow_Mouse(w),VWindow_Mouse(w));
+        Scene_Adapt(&scene,GetWidth(),GetHeight());
+	    Scene_Update(&scene);
+	    Scene_Input(&scene,window.Strokes,VWindow_Mouse(w),VWindow_Mouse(w));
 
         TextBox_Update(&SavingPath,window.Strokes,VWindow_Mouse(w));
         TextBox_Update(&Field,window.Strokes,VWindow_Mouse(w));
