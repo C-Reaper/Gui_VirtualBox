@@ -315,15 +315,15 @@ void ChooseFile(TextBox* SavingPath){
     if(fc) Input_SetText(&SavingPath->In,fc);
     CStr_Free(&fc);
 }
-void ChooseFileHigh(String* HighLighter){
+void ChooseFileHigh(String* hl){
     FileChooser fc = FileChooser_New("File Chooser",".",(NameTypePair[]){
         NameTypePair_New("All Files","*.*"),
         NameTypePair_New("ALXON Files","*.alxon"),
         NameTypePair_Null()
     });
     if(fc){
-        String_Clear(HighLighter);
-        String_Append(HighLighter,fc);
+        String_Clear(hl);
+        String_Append(hl,fc);
     }
     CStr_Free(&fc);
 }
@@ -389,7 +389,7 @@ void Button_SearchHigh(void* parent,Button* b,ButtonEvent* be){
     /*if(be->e.EventType==EVENT_PRESSED){
         ChooseFileHigh();
 
-        char* cstr = String_CStr(&HighLighter);
+        char* cstr = String_CStr(&hl);
         TextBox_SetSyntax(&Field,cstr);
         free(cstr);
     }*/
@@ -407,14 +407,14 @@ void* VB_Editor(void* lpParam) {
     if(!FilePath)
         FilePath = CStr_Cpy("./data/Saved.h");
 
-    String HighLighter = String_New();
+    String hl = String_New();
 
     TextBox SavingPath = TextBox_New(Input_New(INPUT_MAXLENGTH,1),(Rect){ { OffsetX * 4.1f,OffsetY*0.5f-Size*0.5f },{ w->Context.w-OffsetX * 3.1f,OffsetY*0.5f-Size*0.5f } },ALXFONT_PATHS_YANIS,PathSize,PathSize,WHITE);
     Input_SetText(&SavingPath.In,FilePath);
-    TextBox_SetSyntax(&SavingPath,SYSTEM_PATH "SyntaxFiles/Path_Syntax.alxon");
+    TextBox_SetSyntax(&SavingPath,SYSTEM_PATH "SyntaxFiles/Path_Syntax.json");
 
     TextBox Field = TextBox_New(Input_New(INPUT_MAXLENGTH,INPUT_MAXLENGTH),(Rect){ { OffsetX,OffsetY },{ w->Context.w-OffsetX,w->Context.h-OffsetY } },ALXFONT_PATHS_YANIS,Size,Size,WHITE);
-    TextBox_SetSyntax(&Field,SYSTEM_PATH "SyntaxFiles/C_Syntax.alxon");
+    TextBox_SetSyntax(&Field,SYSTEM_PATH "SyntaxFiles/C_Syntax.json");
 
     Scene scene = Scene_New(
         NULL,
@@ -521,7 +521,7 @@ void* VB_Editor(void* lpParam) {
         Thread_Sleep_M(10);
     }
 
-    String_Free(&HighLighter);
+    String_Free(&hl);
     TextBox_Free(&SavingPath);
     TextBox_Free(&Field);
     free(FilePath);
